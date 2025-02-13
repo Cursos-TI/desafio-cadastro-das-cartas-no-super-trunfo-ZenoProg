@@ -1,5 +1,9 @@
 #include <stdio.h>
 
+#define TOTAL_ESTADOS 8
+#define CIDADES_POR_ESTADO 4
+#define TOTAL_CARTAS (TOTAL_ESTADOS * CIDADES_POR_ESTADO)
+
 // Desafio Super Trunfo - Países
 // Tema 1 - Cadastro das Cartas
 // Este código inicial serve como base para o desenvolvimento do sistema de cadastro de cartas de cidades.
@@ -18,35 +22,38 @@ typedef struct {
 int main() {
     // Sugestão: Defina variáveis separadas para cada atributo da cidade.
     // Exemplos de atributos: código da cidade, nome, população, área, PIB, número de pontos turísticos.
-    Carta cartas[4];
+    Carta cartas[TOTAL_CARTAS];
     char estados[] = "ABCDEFGH"; // Lista de estados (A até H)
 
     // Exibir os dados cadastrados
     printf("=== Cadastro das Cartas ===\n");
 
-    for (int i = 0; i < 4; i++) {
-        // Gerar o código automaticamente
-        char estado = estados[i / 4];  // Pega a letra do estado
-        int numero = (i % 4) + 1;       // Garante números de 1 a 4
+    int index = 0;
+    for (int e = 0; e < TOTAL_ESTADOS; e++) {
+        for (int c = 0; c < CIDADES_POR_ESTADO; c++) {
+            // Gerar código automaticamente (ex: A01, B02, C03)
+            sprintf(cartas[index].codigo, "%c%02d", estados[e], c + 1);
 
-        sprintf(cartas[i].codigo, "%c%02d", estado, numero); // Formata o código (ex: A01)
+            printf("\nCarta %d (Código %s):\n", index + 1, cartas[index].codigo);
 
-        printf("\nCarta %d (Código %s):\n", i + 1, cartas[i].codigo);
+            printf("Digite o nome da cidade: ");
+            scanf(" %[^\n]", cartas[index].nome);
 
-        printf("Digite o nome da cidade: ");
-        scanf(" %[^\n]", cartas[i].nome); 
+            printf("Digite a população da cidade: ");
+            scanf("%d", &cartas[index].populacao);
 
-        printf("Digite a população da cidade: ");
-        scanf("%d", &cartas[i].populacao);
+            printf("Digite a área da cidade (em km²): ");
+            scanf("%f", &cartas[index].area);
 
-        printf("Digite a área da cidade (em km²): ");
-        scanf("%f", &cartas[i].area);
+            printf("Digite o PIB da cidade (em bilhões): ");
+            scanf("%lf", &cartas[index].pib);
 
-        printf("Digite o PIB da cidade (em bilhões): ");
-        scanf("%lf", &cartas[i].pib);
+            printf("Digite o número de pontos turísticos da cidade: ");
+            scanf("%d", &cartas[index].pontos_turisticos);
 
-        printf("Digite o número de pontos turísticos da cidade: ");
-        scanf("%d", &cartas[i].pontos_turisticos);
+            index++;
+        }
+
 
         // Cadastro das Cartas:
     // Sugestão: Utilize a função scanf para capturar as entradas do usuário para cada atributo.
@@ -59,7 +66,7 @@ int main() {
 
     // Exibir os dados cadastrados
     printf("\n=== Cartas Cadastradas ===\n");
-    for (int i = 0; i < 4; i++) {
+    for (int i = 0; i < TOTAL_CARTAS; i++) {
         printf("\nCódigo: %s\n", cartas[i].codigo);
         printf("Cidade: %s\n", cartas[i].nome);
         printf("População: %d habitantes\n", cartas[i].populacao);

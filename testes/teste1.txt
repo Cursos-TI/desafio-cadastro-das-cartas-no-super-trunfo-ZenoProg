@@ -105,3 +105,15 @@ int main() {
 
     return 0;
 }
+
+/*
+Explicações:
+- index: Índice que controla a posição atual no array de cartas.
+- while: Estrutura de repetição usada para validar entradas, garantindo que sejam do tipo correto.
+- getchar: Função que consome o caractere de nova linha restante no buffer após uma entrada com scanf.
+- strncpy: Função que copia strings com segurança, evitando estouro de buffer ao limitar o número de caracteres copiados.
+- sizeof: Operador que retorna o tamanho em bytes de uma variável ou tipo, usado para determinar o tamanho máximo das strings.
+*/")
+    }
+  ]
+}

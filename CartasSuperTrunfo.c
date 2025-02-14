@@ -1,73 +1,92 @@
 #include <stdio.h>
+#include <string.h>
 
 #define TOTAL_ESTADOS 8
 #define CIDADES_POR_ESTADO 4
 #define TOTAL_CARTAS (TOTAL_ESTADOS * CIDADES_POR_ESTADO)
 
-// Desafio Super Trunfo - Países
-// Tema 1 - Cadastro das Cartas
-// Este código inicial serve como base para o desenvolvimento do sistema de cadastro de cartas de cidades.
-// Siga os comentários para implementar cada parte do desafio.
-//Teste larissa
-
 typedef struct {
-    char codigo[4];       // Código da cidade (ex: A01, B02)
-    char nome[50];        // Nome da cidade
-    int populacao;        // População total
-    float area;           // Área total em km²
-    double pib;           // PIB em bilhões
-    int pontos_turisticos;// Número de pontos turísticos
+    char codigo[4];
+    char nome[50];
+    int populacao;
+    float area;
+    double pib;
+    int pontos_turisticos;
+    char estado[50];
+    char pais[50];
 } Carta;
 
-int main() {
-    // Sugestão: Defina variáveis separadas para cada atributo da cidade.
-    // Exemplos de atributos: código da cidade, nome, população, área, PIB, número de pontos turísticos.
-    Carta cartas[TOTAL_CARTAS];
-    char estados[] = "ABCDEFGH"; // Lista de estados (A até H)
+void removerNovaLinha(char *str) {
+    size_t len = strlen(str);
+    if (len > 0 && str[len - 1] == '\n') {
+        str[len - 1] = '\0';
+    }
+}
 
-    // Exibir os dados cadastrados
-    printf("=== Cadastro das Cartas ===\n");
+int main() {
+    Carta cartas[TOTAL_CARTAS];
+    const char estados[] = "ABCDEFGH";
+    char nome_pais[50];
+
+    printf("Digite o nome do país: ");
+    fgets(nome_pais, sizeof(nome_pais), stdin);
+    removerNovaLinha(nome_pais);
 
     int index = 0;
     for (int e = 0; e < TOTAL_ESTADOS; e++) {
+        char nome_estado[50];
+        printf("\nDigite o nome do estado %c: ", estados[e]);
+        fgets(nome_estado, sizeof(nome_estado), stdin);
+        removerNovaLinha(nome_estado);
+
         for (int c = 0; c < CIDADES_POR_ESTADO; c++) {
-            // Gerar código automaticamente (ex: A01, B02, C03)
             sprintf(cartas[index].codigo, "%c%02d", estados[e], c + 1);
 
             printf("\nCarta %d (Código %s):\n", index + 1, cartas[index].codigo);
 
             printf("Digite o nome da cidade: ");
-            scanf(" %[^\n]", cartas[index].nome);
+            fgets(cartas[index].nome, sizeof(cartas[index].nome), stdin);
+            removerNovaLinha(cartas[index].nome);
 
             printf("Digite a população da cidade: ");
-            scanf("%d", &cartas[index].populacao);
+            while (scanf("%d", &cartas[index].populacao) != 1) {
+                printf("Entrada inválida. Digite um número inteiro: ");
+                while (getchar() != '\n');
+            }
 
             printf("Digite a área da cidade (em km²): ");
-            scanf("%f", &cartas[index].area);
+            while (scanf("%f", &cartas[index].area) != 1) {
+                printf("Entrada inválida. Digite um número decimal: ");
+                while (getchar() != '\n');
+            }
 
             printf("Digite o PIB da cidade (em bilhões): ");
-            scanf("%lf", &cartas[index].pib);
+            while (scanf("%lf", &cartas[index].pib) != 1) {
+                printf("Entrada inválida. Digite um número decimal: ");
+                while (getchar() != '\n');
+            }
 
             printf("Digite o número de pontos turísticos da cidade: ");
-            scanf("%d", &cartas[index].pontos_turisticos);
+            while (scanf("%d", &cartas[index].pontos_turisticos) != 1) {
+                printf("Entrada inválida. Digite um número inteiro: ");
+                while (getchar() != '\n');
+            }
+            getchar();
+
+            strncpy(cartas[index].pais, nome_pais, sizeof(cartas[index].pais) - 1);
+            cartas[index].pais[sizeof(cartas[index].pais) - 1] = '\0';
+            strncpy(cartas[index].estado, nome_estado, sizeof(cartas[index].estado) - 1);
+            cartas[index].estado[sizeof(cartas[index].estado) - 1] = '\0';
 
             index++;
         }
-
-
-        // Cadastro das Cartas:
-    // Sugestão: Utilize a função scanf para capturar as entradas do usuário para cada atributo.
-    // Solicite ao usuário que insira as informações de cada cidade, como o código, nome, população, área, etc.
-    
-    // Exibição dos Dados das Cartas:
-    // Sugestão: Utilize a função printf para exibir as informações das cartas cadastradas de forma clara e organizada.
-    // Exiba os valores inseridos para cada atributo da cidade, um por linha.
     }
 
-    // Exibir os dados cadastrados
     printf("\n=== Cartas Cadastradas ===\n");
     for (int i = 0; i < TOTAL_CARTAS; i++) {
         printf("\nCódigo: %s\n", cartas[i].codigo);
+        printf("País: %s\n", cartas[i].pais);
+        printf("Estado: %s\n", cartas[i].estado);
         printf("Cidade: %s\n", cartas[i].nome);
         printf("População: %d habitantes\n", cartas[i].populacao);
         printf("Área: %.2f km²\n", cartas[i].area);

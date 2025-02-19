@@ -65,7 +65,7 @@ int main() {
 
             printf("Digite o PIB da cidade (em bilhões de reais): ");
             while (scanf("%lf", &cartas[index].pib) != 1) {
-                printf("Entrada inválida. Digite um número decimal: ");
+                printf("Entrada inválida. Digite um número decimal (ex: 1.957 para 1,957 bilhões): ");
                 while (getchar() != '\n');
             }
 
@@ -89,9 +89,9 @@ int main() {
                 cartas[index].densidade = 0;
             }
 
-            // Calcula o PIB per capita (PIB/população)
+            // Calcula o PIB per capita (PIB * 1 bilhão / população)
             if (cartas[index].populacao > 0) {
-                cartas[index].pib_per_capita = (cartas[index].pib * 1000000000) / cartas[index].populacao;
+                cartas[index].pib_per_capita = (cartas[index].pib * 1e9) / cartas[index].populacao;
             } else {
                 cartas[index].pib_per_capita = 0;
             }

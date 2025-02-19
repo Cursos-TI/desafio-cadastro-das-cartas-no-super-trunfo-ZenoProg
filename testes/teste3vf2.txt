@@ -1,6 +1,5 @@
 #include <stdio.h>
 #include <string.h>
-#include <stdlib.h>
 
 #define TOTAL_ESTADOS 8
 #define CIDADES_POR_ESTADO 4
@@ -86,34 +85,20 @@ int main() {
             removerNovaLinha(cartas[index].nome);
 
             printf("Digite a população da cidade: ");
-            while (scanf("%d", &cartas[index].populacao) != 1) {
-                printf("Entrada inválida. Digite um número inteiro: ");
-                while (getchar() != '\n');
-            }
+            scanf("%d", &cartas[index].populacao);
 
             printf("Digite a área da cidade (em km²): ");
-            while (scanf("%f", &cartas[index].area) != 1) {
-                printf("Entrada inválida. Digite um número decimal: ");
-                while (getchar() != '\n');
-            }
+            scanf("%f", &cartas[index].area);
 
-            printf("Digite o PIB da cidade (em bilhões): ");
-            while (scanf("%lf", &cartas[index].pib) != 1) {
-                printf("Entrada inválida. Digite um número decimal: ");
-                while (getchar() != '\n');
-            }
+            printf("Digite o PIB da cidade (em bilhões de reais): ");
+            scanf("%lf", &cartas[index].pib);
 
             printf("Digite o número de pontos turísticos da cidade: ");
-            while (scanf("%d", &cartas[index].pontos_turisticos) != 1) {
-                printf("Entrada inválida. Digite um número inteiro: ");
-                while (getchar() != '\n');
-            }
+            scanf("%d", &cartas[index].pontos_turisticos);
             getchar();
 
             strncpy(cartas[index].pais, nome_pais, sizeof(cartas[index].pais) - 1);
-            cartas[index].pais[sizeof(cartas[index].pais) - 1] = '\0';
             strncpy(cartas[index].estado, nome_estado, sizeof(cartas[index].estado) - 1);
-            cartas[index].estado[sizeof(cartas[index].estado) - 1] = '\0';
 
             if (cartas[index].area > 0) {
                 cartas[index].densidade = cartas[index].populacao / cartas[index].area;
@@ -126,50 +111,20 @@ int main() {
         }
     }
 
-    // Exibição das cartas no formato desejado
-    printf("\n=== Cartas Cadastradas ===\n");
-    for (int i = 0; i < TOTAL_CARTAS; i++) {
-        printf("\nCódigo: %s\n", cartas[i].codigo);
-        printf("País: %s\n", cartas[i].pais);
-        printf("Estado: %s\n", cartas[i].estado);
-        printf("Cidade: %s\n", cartas[i].nome);
-        printf("População: %d habitantes\n", cartas[i].populacao);
-        printf("Área: %.2f km²\n", cartas[i].area);
-        printf("PIB: %.2lf bilhões\n", cartas[i].pib);
-        printf("Pontos turísticos: %d\n", cartas[i].pontos_turisticos);
-    }
+    // Laço para garantir que os índices sejam válidos
+    int c1, c2;
+    do {
+        printf("\nDigite os índices das duas cartas para comparar (0-%d): ", TOTAL_CARTAS - 1);
+        scanf("%d %d", &c1, &c2);
 
-    // Laço para permitir várias comparações
-    char comando[10];
-    while (1) {
-        printf("\nDigite os índices das duas cartas para comparar (0-%d) ou 'exit' para sair:\n", TOTAL_CARTAS - 1);
-        printf("Exemplo: Para comparar as cartas 0 e 3, digite '0 3'.\n");
-        
-        printf("Comando: ");
-        fgets(comando, sizeof(comando), stdin);
-        removerNovaLinha(comando);
-
-        // Verifica se o usuário digitou "exit"
-        if (strcmp(comando, "exit") == 0) {
-            printf("Saindo do programa...\n");
-            break;
+        // Verifica se os índices estão dentro do intervalo válido
+        if (c1 >= 0 && c1 < TOTAL_CARTAS && c2 >= 0 && c2 < TOTAL_CARTAS) {
+            compararCartas(cartas[c1], cartas[c2]);
+            break;  // Sai do laço se os índices forem válidos
+        } else {
+            printf("Índices inválidos! Tente novamente.\n");
         }
-
-        int c1, c2;
-        int valid_input = 0;
-
-        // Verifica se os índices fornecidos são válidos
-        if (sscanf(comando, "%d %d", &c1, &c2) == 2) {
-            if (c1 >= 0 && c1 < TOTAL_CARTAS && c2 >= 0 && c2 < TOTAL_CARTAS) {
-                compararCartas(cartas[c1], cartas[c2]);
-                valid_input = 1;
-            }
-        }
-
-        if (!valid_input) {
-            printf("Índices inválidos ou comando incorreto! Tente novamente.\n");
-        }
-    }
+    } while (1);  // Continua pedindo os índices até serem válidos
 
     return 0;
 }
